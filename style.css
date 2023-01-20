@@ -19,10 +19,16 @@ body {
 }
 
 #display {
-  height: 100px;
+  height: 70px;
   width: 80%;
   background-color: black;
   margin-bottom: 15px;
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  font-size: 30px;
+  padding: 10px;
 }
 .wrapper {
   width: 80%;
@@ -42,4 +48,15 @@ body {
 
 button {
   margin: 3px;
+  font-size: 1.5em;
+  font-weight: bold;
+  border-radius: 10px;
+}
+
+.operator {
+  background-color: rgb(101, 156, 224);
+}
+
+.equal {
+  background-color: greenyellow;
 }
