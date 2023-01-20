@@ -26,55 +26,118 @@ function operate(operation, x, y) {
   }
 }
 
-let firstOperator;
-let secondOperator;
-let result;
-let operand;
-let displayValue = document.querySelector("#display");
+let firstOperand = null;
+let secondOperand = null;
+let result = null;
+let firstOperator = null;
+let secondOperator = null;
+let displayValue = "0";
+const buttons = document.querySelectorAll("button");
 
-document.querySelectorAll(".number").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    //call display function with text content
-    showDisplay(btn.textContent);
-  });
-});
-
-document.querySelector(".equal").addEventListener("click", function () {
-  showDisplay(result);
-  firstOperator === undefined;
-  secondOperator === undefined;
-});
-
-document.querySelectorAll(".operator").forEach((btn) => {
-  btn.addEventListener("click", function () {
-    if (firstOperator === undefined) {
-      firstOperator = +displayValue.textContent;
-      operand = btn.textContent;
-      clearDisplay();
-      return;
-    } else {
-      secondOperator = +displayValue.textContent;
-      clearDisplay();
-      result = operate(operand, firstOperator, secondOperator);
-      showDisplay(result);
-      clearDisplay();
-      firstOperator = result;
-      operand = btn.textContent;
-      return;
-    }
-    /* Put the display value in the first operator and store the clicked operand. 
-
-       If the first operator is full, put the number in the second operator, run the operate function,
-       put the result of the operation in the first operator, store the new operator in operator. 
-       
-       Call clear display function*/
-  });
-});
-
-function clearDisplay() {
-  displayValue.textContent = "";
+function updateDisplay() {
+  const display = document.getElementById("display");
+  display.textContent = displayValue;
 }
 
-function showDisplay(x) {
-  displayValue.textContent += x;
+updateDisplay();
+
+function clickButton() {
+  buttons.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      if (btn.classList.contains("number")) {
+        inputOperand(btn.value);
+        updateDisplay();
+      } else if (btn.classList.contains("operator")) {
+        inputOperator(btn.value);
+      } else if (btn.classList.contains("equal")) {
+        inputEquals();
+        updateDisplay();
+      } else if (btn.classList.contains("clear")) {
+        clearDisplay();
+        updateDisplay();
+      }
+    });
+  });
+}
+
+clickButton();
+
+function inputOperand(operand) {
+  if (firstOperator === null) {
+    if (displayValue === "0" || displayValue === 0) {
+      //1st click - first operand input
+      displayValue = operand;
+    } else if (displayValue === firstOperand) {
+      //start new operation after inputEquals()
+      displayValue = operand;
+    } else {
+      displayValue += operand;
+    }
+  } else {
+    //3rd/5th click - inputs secondOperand
+    if (displayValue === firstOperand) {
+      displayValue = operand;
+    } else {
+      displayValue += operand;
+    }
+  }
+}
+
+function inputOperator(operator) {
+  if (firstOperator != null && secondOperator === null) {
+    //4th click - handles input of second operator
+    secondOperand = displayValue;
+    secondOperator = operator;
+    result = operate(firstOperator, +firstOperand, +secondOperand);
+    displayValue = result.toString();
+    firstOperand = result;
+    result = null;
+  } else if (firstOperator != null && secondOperator != null) {
+    //6th click
+    secondOperand = displayValue;
+    result = operate(secondOperator, +firstOperand, +secondOperand);
+    secondOperator = operator;
+    displayValue = result.toString();
+    firstOperand = result;
+    result = null;
+  } else {
+    //2nd click handles first operator input
+    firstOperator = operator;
+    firstOperand = displayValue;
+  }
+}
+
+function inputEquals() {
+  if (firstOperator === null) {
+    return;
+  } else if (secondOperator != null) {
+    //handle final result
+    secondOperand = displayValue;
+    result = operate(secondOperator, +firstOperand, +secondOperand);
+    displayValue = result.toString();
+    firstOperand = result;
+    secondOperand = null;
+    firstOperator = null;
+    secondOperator = null;
+    result = null;
+  } else {
+    //handle first operation
+    secondOperand = displayValue;
+    result = operate(firstOperator, +firstOperand, +secondOperand);
+    displayValue = result;
+    firstOperand = displayValue;
+    secondOperand = null;
+    firstOperator = null;
+    secondOperator = null;
+    result = null;
+  }
+}
+
+function clearDisplay() {
+  displayValue = "0";
+  firstOperand = null;
+  secondOperand = null;
+  firstOperator = null;
+  secondOperator = null;
+  result = null;
 }
