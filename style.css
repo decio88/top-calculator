@@ -1,4 +1,45 @@
-html {
-  text-align: center;
+body {
   font-family: monospace;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container {
+  display: flex;
+  width: 400px;
+  height: 400px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  border-radius: 10%;
+  background-color: bisque;
+  padding: 15px;
+}
+
+#display {
+  height: 100px;
+  width: 80%;
+  background-color: black;
+  margin-bottom: 15px;
+}
+.wrapper {
+  width: 80%;
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.clear {
+  background-color: orange;
+}
+
+.zero {
+  grid-column-start: 1;
+  grid-column-end: 3;
+}
+
+button {
+  margin: 3px;
 }
