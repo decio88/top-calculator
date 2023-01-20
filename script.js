@@ -39,6 +39,12 @@ document.querySelectorAll(".number").forEach((btn) => {
   });
 });
 
+document.querySelector(".equal").addEventListener("click", function () {
+  showDisplay(result);
+  firstOperator === undefined;
+  secondOperator === undefined;
+});
+
 document.querySelectorAll(".operator").forEach((btn) => {
   btn.addEventListener("click", function () {
     if (firstOperator === undefined) {
